@@ -13,7 +13,18 @@ namespace SearchController {
             return
         }
 
-        const url = `https://www.cda.pl/video/show/${query}`
+        let { page, duration, sort } = req.body
+
+        page = parseInt(page)
+        page = isNaN(page) ? 1 : page
+        const pagePart = page > 1 ? `/p${page}` : ''
+
+        const url = new URL(`https://www.cda.pl/video/show/${query}${pagePart}`)
+
+        if (duration && duration.length > 0)
+            url.searchParams.append('duration', duration)
+        if (sort && sort.length > 0)
+            url.searchParams.append('s', sort)
 
         const response = await axios.get(url.toString()).catch(() => {})
 
