@@ -6,22 +6,6 @@ import { Video } from '../shared/Video'
 import { isSet } from './utils'
 
 namespace VideoController {
-    function decodeFileLink(u: string) {
-        u = u.replace(/_XDDD|_CDA|_ADC|_CXD|_QWE|_Q5|_IKSDE/g, "")
-        u = decodeURIComponent(u)
-
-        u = u.split('')
-            .map(c => {
-                const code = c.charCodeAt(0)
-                return (code >= 33 && code <= 126) ? String.fromCharCode(33 + (code + 14) % 94) : c
-            }).join('')
-
-        u = u.replace(".cda.mp4", "")
-            .replace(/.2cda.pl|.3cda.pl/g, ".cda.pl")
-
-        return `https://${u}.mp4`
-    }
-
     export async function index(req: Request, res: Response) {
         const { id } = req.body
         if (!isSet(id)) {
@@ -50,17 +34,8 @@ namespace VideoController {
             return
         }
 
-        const data = JSON.parse(player)
-
-        delete data.ads
-
-        data.video.file = decodeFileLink(data.video.file)
-
-        const title = load('<div />')
-        title('div').html(data.title)
-        data.video.title = title('div').text()
-
-        res.json(data)
+        const video = Video.fromHtml($, JSON.parse(player))
+        res.json(video)
     }
 
     export async function file(req: Request, res: Response) {
@@ -128,7 +103,7 @@ namespace VideoController {
     export async function replies(req: Request, res: Response) {
         const { id, commentId, client } = req.body
         const { sequence } = client
-        
+
         if (!isSet(id, sequence, commentId)) {
             ApiError.BAD_REQUEST.raise(res)
             return

@@ -1,5 +1,6 @@
 import { Cheerio } from 'cheerio'
 import { Element } from 'domhandler'
+import { fixUrl } from '../server/utils'
 import { Video } from './Video'
 
 export default class ListVideo {
@@ -17,10 +18,10 @@ export default class ListVideo {
 
         return new ListVideo(
             Video.getId(titleEl.attr('href')),
-            titleEl.text(),
-            $.find('img.video-clip-image').attr('src')?.replace('//', 'https://')!,
-            $.find('span.timeElem').text(),
-            $.find('span.hd-ico-elem').text(),
+            titleEl.text().trim(),
+            fixUrl($.find('img').attr('src')!),
+            $.find('span.timeElem').text().trim(),
+            $.find('span.hd-ico-elem').text().trim(),
             $.find('span.flag-video-premium').length > 0
         )
     }

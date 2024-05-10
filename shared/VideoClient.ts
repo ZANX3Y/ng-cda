@@ -1,6 +1,6 @@
 export default class VideoClient {
     constructor(
-        public sequence: string,
+        public sequence: number,
         public ts: string,
         public key: string,
     ) {}
