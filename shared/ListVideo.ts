@@ -1,7 +1,7 @@
 import { Cheerio } from 'cheerio'
 import { Element } from 'domhandler'
 import { fixUrl } from '../server/utils'
-import { Video } from './Video'
+import Video from './Video'
 
 export default class ListVideo {
     constructor(

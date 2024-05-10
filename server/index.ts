@@ -1,5 +1,6 @@
 import cors from 'cors'
 import express from 'express'
+import CommentController from './CommentController'
 import SearchController from './SearchController'
 import VideoController from './VideoController'
 
@@ -13,8 +14,12 @@ app.get('/', (_, res) => {
 
 app.post('/video', VideoController.index)
 app.post('/video/file', VideoController.file)
-app.post('/video/comments', VideoController.comments)
-app.post('/video/replies', VideoController.replies)
+
+app.post('/video/comments', CommentController.index)
+app.post('/video/comment/replies', CommentController.replies)
+app.post('/video/comment/upvote', CommentController.upvote)
+app.post('/video/comment/add', CommentController.add)
+app.post('/video/comment/reply', CommentController.reply)
 
 app.post('/search', SearchController.index)
 app.post('/search/suggest', SearchController.suggest)

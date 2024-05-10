@@ -2,7 +2,7 @@ import axios from 'axios'
 import { load } from 'cheerio'
 import { Request, Response } from 'express'
 import ApiError from '../shared/ApiError'
-import { Video } from '../shared/Video'
+import Video from '../shared/Video'
 import { isSet } from './utils'
 
 namespace VideoController {
@@ -67,70 +67,9 @@ namespace VideoController {
             return
         }
 
-        const file = response.data.result.resp
-
-        res.json({ file })
-    }
-
-    export async function comments(req: Request, res: Response) {
-        const { id, offset } = req.body
-        if (!isSet(id, offset)) {
-            ApiError.BAD_REQUEST.raise(res)
-            return
-        }
-
-        const url = 'https://www.cda.pl/a/moreComments'
-
-        const fd = new FormData()
-        fd.append('offset', offset)
-        fd.append('age_confirm', '')
-
-        const response = await axios.post(url, fd, {
-            headers: {
-                'Accept': 'application/json, text/javascript, */*; q=0.01',
-                'Referer': Video.getLink(id)
-            }
-        }).catch(() => {})
-
-        if (!response) {
-            ApiError.NOT_FOUND.raise(res)
-            return
-        }
-
-        res.json(response.data)
-    }
-
-    export async function replies(req: Request, res: Response) {
-        const { id, commentId, client } = req.body
-        const { sequence } = client
-
-        if (!isSet(id, sequence, commentId)) {
-            ApiError.BAD_REQUEST.raise(res)
-            return
-        }
-
-        const url = Video.getLink(id)
-
-        const data = {
-            id: sequence,
-            jsonrpc: '2.0',
-            method: 'dobierzWszystkieOdpowiedzi',
-            params: [commentId, id.slice(0, -2), 'video', {}]
-        }
-
-        const response = await axios.post(url, data, {
-            headers: {
-                'Accept': 'application/json, text/javascript, */*; q=0.01',
-                'Referer': url
-            }
-        }).catch(() => {})
-
-        if (!response) {
-            ApiError.NOT_FOUND.raise(res)
-            return
-        }
-
-        res.json(response.data)
+        res.json({
+            file: response.data.result.resp
+        })
     }
 }
 

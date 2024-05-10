@@ -1,4 +1,4 @@
-import { Cheerio } from 'cheerio'
+import { Cheerio, load } from 'cheerio'
 import { Element } from 'domhandler'
 
 export default class Comment {
@@ -14,6 +14,12 @@ export default class Comment {
         public replyCount: number,
     ) {}
 
+    static parseReplies = (html: string): Comment[] => {
+        const $ = load(html)
+        const rps = $(".subcomment")
+        return rps.map((_, el) => Comment.fromHtml($(el))).get()
+    }
+
     static fromHtml = (box: Cheerio<Element>, isMain: boolean = false): Comment => {
         let com = box.find(".komentarz").first()
         if (com.length === 0) com = box
@@ -28,11 +34,7 @@ export default class Comment {
         const authorName = isAnon ? com.find(".anonim").first().text().trim() : aName
         const authorPic = com.find(".commentAvatar img").attr("src")?.replace("//", "https://") ?? ''
 
-        let replies: Comment[] = []
-        if (isMain) {
-            const rps = box.find(".subcomment")
-            replies = rps.map((_, el) => Comment.fromHtml(box.find(el))).get()
-        }
+        const replies = isMain ? Comment.parseReplies(box.html() || '') : []
 
         let replyCount = replies.length
         if (isMain) {

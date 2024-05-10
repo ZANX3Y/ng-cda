@@ -4,7 +4,7 @@ import Comment from './Comment'
 import ListVideo from './ListVideo'
 import VideoClient from './VideoClient'
 
-export class Video {
+export default class Video {
     constructor(
         public id: string,
         public title: string,
@@ -61,6 +61,11 @@ export class Video {
         return `https://${u}.mp4`
     }
 
+    static parseComments = ($: CheerioAPI) => {
+        const commentEls = $('[id^=boxComm]')
+        return commentEls.map((_, el) => Comment.fromHtml($(el), true)).get()
+    }
+
     static fromHtml = ($: CheerioAPI, data: any): Video => {
         const vid = data.video
 
@@ -86,11 +91,10 @@ export class Video {
         const folderId = folderEl.attr('href') ?? ''
         const folderName = folderEl.text() ?? ''
 
-        const commentEls = $('[id^=boxComm]')
-        const comments = commentEls.map((_, el) => Comment.fromHtml($(el), true)).get()
+        const comments = Video.parseComments($)
 
         const relatedEls = $('#rightCol .media-show')
-        const related = relatedEls.map((n, el) => {
+        const related = relatedEls.map((_, el) => {
             return ListVideo.fromHtml($(el))
         }).get()
 
