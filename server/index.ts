@@ -1,6 +1,7 @@
 import cors from 'cors'
 import express from 'express'
 import CommentController from './CommentController'
+import HomeController from './HomeController'
 import SearchController from './SearchController'
 import VideoController from './VideoController'
 
@@ -11,6 +12,10 @@ app.use(express.json())
 app.get('/', (_, res) => {
     res.send('Hello World!')
 })
+
+app.post('/home', HomeController.index)
+app.post('/home/category', HomeController.category)
+app.post('/home/categories', HomeController.categories)
 
 app.post('/video', VideoController.index)
 app.post('/video/file', VideoController.file)

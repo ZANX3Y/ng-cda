@@ -2,9 +2,8 @@ import { CheerioAPI } from 'cheerio'
 import { fixUrl } from '../server/utils'
 import Comment from './Comment'
 import ListVideo from './ListVideo'
-import VideoClient from './VideoClient'
 
-export default class Video {
+class Video {
     constructor(
         public id: string,
         public title: string,
@@ -29,7 +28,7 @@ export default class Video {
 
         public related: ListVideo[],
 
-        public client: VideoClient,
+        public client: Video.Client,
     ) {}
 
     static getId(url?: string): string {
@@ -98,7 +97,7 @@ export default class Video {
             return ListVideo.fromHtml($(el))
         }).get()
 
-        const client = new VideoClient(3, vid.ts, vid.hash2)
+        const client = new Video.Client(3, vid.ts, vid.hash2)
 
         return new Video(
             id, title, thumb, quality, qualities, file,
@@ -118,6 +117,22 @@ export default class Video {
             json.inFolder, json.folderId, json.folderName,
             json.comments.map(Comment.fromJSON),
             json.related.map(ListVideo.fromJSON),
-            VideoClient.fromJSON(json.client)
+            Video.Client.fromJSON(json.client)
         )
 }
+
+namespace Video {
+    export class Client {
+        constructor(
+            public sequence: number,
+            public ts: string,
+            public key: string,
+        ) {
+        }
+
+        static fromJSON = (json: any) =>
+            new Client(json.sequence, json.ts, json.key)
+    }
+}
+
+export default Video

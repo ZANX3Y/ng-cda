@@ -1,14 +1,14 @@
 import { Cheerio, load } from 'cheerio'
 import { Element } from 'domhandler'
 
-export default class Comment {
+class Comment {
     constructor(
         public id: string,
         public content: string,
         public date: string,
         public points: string,
 
-        public author: CommentAuthor,
+        public author: Comment.Author,
 
         public replies: Comment[],
         public replyCount: number,
@@ -46,7 +46,7 @@ export default class Comment {
 
         return new Comment(
             id, content, date, points,
-            new CommentAuthor(isAnon, authorName, authorPic),
+            new Comment.Author(isAnon, authorName, authorPic),
             replies, replyCount
         )
     }
@@ -57,19 +57,23 @@ export default class Comment {
             json.content,
             json.date,
             json.points,
-            CommentAuthor.fromJSON(json.author),
+            Comment.Author.fromJSON(json.author),
             json.replies.map(Comment.fromJSON),
             json.replyCount,
         )
 }
 
-export class CommentAuthor {
-    constructor(
-        public isAnon: boolean,
-        public name: string,
-        public pic: string,
-    ) {}
+namespace Comment {
+    export class Author {
+        constructor(
+            public isAnon: boolean,
+            public name: string,
+            public pic: string,
+        ) {}
 
-    static fromJSON = (json: any) =>
-        new CommentAuthor(json.isAnon, json.name, json.pic)
+        static fromJSON = (json: any) =>
+            new Author(json.isAnon, json.name, json.pic)
+    }
 }
+
+export default Comment
