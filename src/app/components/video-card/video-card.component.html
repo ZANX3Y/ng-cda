@@ -1,0 +1,8 @@
+<a class="video-card" [routerLink]="['/video', video.id]">
+    <div class="thumbnail">
+        <img [src]="video.thumb" [alt]="video.title" />
+        <span class="duration" [innerText]="video.duration"></span>
+    </div>
+
+    <h3 class="title" [innerText]="video.title" [title]="video.title"></h3>
+</a>

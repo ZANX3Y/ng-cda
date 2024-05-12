@@ -20,7 +20,7 @@ namespace HomeController {
         const videos = $('div.video-clip, div.videoInfo')
             .map((_, el) => ListVideo.fromHtml($(el))).get()
 
-        const hasNext = $('.paginationControl a.sbmNext').length > 0
+        const hasNext = $('.paginationControl a.sbmNext').length > 0 && videos.length > 0
 
         return {
             $,

@@ -49,6 +49,10 @@ export default {
             },
             fontFamily: {
                 brand: ['Orbitron', 'sans-serif'],
+            },
+            screens: {
+                '3xl': '1900px',
+                '4xl': '2220px',
             }
         },
     },
