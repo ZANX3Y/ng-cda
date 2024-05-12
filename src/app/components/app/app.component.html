@@ -1,0 +1,66 @@
+<aside id="sidebar" [ngClass]="{ 'active': sidebarActive }">
+    <header class="flex items-center justify-center h-14 flex-shrink-0 select-none bg-gradient-to-t from-surface-a to-surface-b">
+        <a class="text-xl font-semibold font-brand" routerLink="/">ngCda</a>
+    </header>
+
+    <nav class="flex-grow flex flex-col py-6 pe-6 overflow-y-auto">
+        <app-sidebar-link link="/" icon="home" label="Strona główna" />
+
+        <div class="ps-6">
+            <p-divider align="center"></p-divider>
+        </div>
+
+        <app-sidebar-link link="/watch-later" icon="watch_later" label="Do obejrzenia" />
+        <app-sidebar-link link="/history" icon="history" label="Historia" />
+
+        <div class="ps-6">
+            <p-divider align="center"></p-divider>
+        </div>
+
+        <app-sidebar-link link="/trending" icon="mode_heat" label="Popularne" />
+        <app-sidebar-link link="/new" icon="new_releases" label="Najnowsze" />
+
+        <div class="ps-6">
+            <p-divider align="center"></p-divider>
+        </div>
+
+        <div>
+            <a class="sidebar-link" (click)="Config.CATEGORIES_EXPANDED = !Config.CATEGORIES_EXPANDED">
+                <span class="material-symbols-outlined">category</span>
+                <span class="text">Kategorie</span>
+                <span class="material-symbols-outlined ml-auto transition-transform duration-200" [ngClass]="{ '-rotate-90': !Config.CATEGORIES_EXPANDED }">keyboard_arrow_down</span>
+            </a>
+
+            <div class="overflow-hidden transition-max-height duration-200" [ngStyle]="{ 'max-height': Config.CATEGORIES_EXPANDED ? '1000px' : '0' }">
+                <a class="sidebar-link nested" *ngFor="let category of categories" [routerLink]="['/category', category.id]" routerLinkActive="bg-surface-b" [title]="category.name">
+                    <span class="text" [innerText]="category.name"></span>
+                    <span class="subtext" [innerText]="category.videos"></span>
+                </a>
+            </div>
+        </div>
+
+        <div class="flex-grow py-4"></div>
+
+        <app-sidebar-link link="/settings" icon="settings" label="Ustawienia" />
+        <app-sidebar-link link="/about" icon="info" label="O aplikacji" />
+    </nav>
+</aside>
+
+<div id="sidebar-dimmer" [ngClass]="{ 'active': sidebarActive }" (click)="sidebarActive = false"></div>
+
+<main class="ml-0 md:ml-64">
+    <div id="navbar">
+        <p-button icon="pi pi-menu" [rounded]="true" [text]="true" (click)="sidebarActive = !sidebarActive" class="md:hidden">
+            <i class="material-symbols-outlined text-2xl text-text-color">menu</i>
+        </p-button>
+
+        <p-inputGroup styleClass="w-full max-w-screen-sm h-10 pl-2 pr-4 mx-auto">
+            <input type="text" pInputText placeholder="Szukaj" class="pl-5 rounded-l-full">
+            <button type="button" pButton icon="pi pi-search" class="w-14 pr-1 rounded-r-full p-button-secondary"></button>
+        </p-inputGroup>
+    </div>
+
+    <div class="p-6">
+        <router-outlet></router-outlet>
+    </div>
+</main>

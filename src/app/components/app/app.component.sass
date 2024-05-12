@@ -1,0 +1,25 @@
+#sidebar
+    @apply flex flex-col fixed top-0 left-0 z-50 w-64 h-full bg-surface-a overflow-hidden transform transition-transform duration-200 ease-in-out
+
+    @media (max-width: 767px)
+        @apply -translate-x-full translate-y-0
+
+        &.active
+            @apply transform translate-x-0
+
+#sidebar-dimmer
+    @apply hidden fixed top-0 left-0 z-40 w-full h-full bg-black bg-opacity-50
+
+    &.active
+        @apply max-md:block
+
+#navbar
+    @apply sticky top-0 flex items-center h-14 px-2 gap-2 bg-gradient-to-t from-surface-a to-surface-b
+
+    &::before
+        content: ''
+        @apply absolute top-full left-0 w-8 h-8 bg-surface-a hidden md:block
+
+    &::after
+        content: ''
+        @apply absolute top-full left-0 w-8 h-8 bg-surface-ground rounded-tl-2xl hidden md:block

@@ -1,0 +1,14 @@
+.sidebar-link
+    @apply flex flex-row items-center gap-2 px-6 py-2 text-text-color rounded-e-full cursor-pointer select-none hover:bg-surface-b hover:text-primary-color
+
+    .text
+        @apply pl-4 text-sm font-semibold truncate
+
+    &.nested
+        @apply flex-col items-start gap-0 pl-14
+
+        .text
+            @apply pl-0
+
+        .subtext
+            @apply text-xs
