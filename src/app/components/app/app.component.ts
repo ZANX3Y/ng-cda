@@ -10,6 +10,7 @@ import { InputTextModule } from 'primeng/inputtext'
 import Category from '../../../../shared/Category'
 import Config from '../../data/Config'
 import { SidebarLinkComponent } from '../sidebar-link/sidebar-link.component'
+import { CategoryService } from '../../data/category.service'
 
 @Component({
     selector: 'app-root',
@@ -41,10 +42,12 @@ export class AppComponent implements OnInit {
     constructor(
         private primengConfig: PrimeNGConfig,
         private router: Router,
+        private categoryService: CategoryService,
     ) {}
 
     ngOnInit() {
         this.primengConfig.ripple = true
         this.router.events.subscribe(() => this.sidebarActive = false)
+        this.categoryService.getCategories().subscribe(categories => this.categories = categories)
     }
 }

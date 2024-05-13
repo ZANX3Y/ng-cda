@@ -1,7 +1,1 @@
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 4xl:grid-cols-6 gap-x-4 gap-y-10"
-     infinite-scroll (scrolled)="loadVideos()" [infiniteScrollDistance]="2">
-
-    <app-video-card *ngFor="let video of videos" [video]="video"></app-video-card>
-
-    <p-progressSpinner class="flex justify-center w-full col-span-full" *ngIf="hasNext" />
-</div>
+<app-video-list [videos]="videos" [hasNext]="hasNext" [load]="loadVideos" />

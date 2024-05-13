@@ -1,34 +1,32 @@
 import { CommonModule } from '@angular/common'
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll'
-import { ButtonModule } from 'primeng/button'
-import { ProgressSpinnerModule } from 'primeng/progressspinner'
 import { Subscription } from 'rxjs'
+import { switchCase } from '../../../../server/utils'
 import ListVideo from '../../../../shared/ListVideo'
+import { CategoryService } from '../../data/category.service'
 import { HomeService } from '../../data/home.service'
-import { VideoCardComponent } from '../video-card/video-card.component'
+import { VideoListComponent } from '../video-list/video-list.component'
 
 @Component({
     selector: 'app-home',
     standalone: true,
     imports: [
-        ButtonModule,
         CommonModule,
-        InfiniteScrollModule,
-        ProgressSpinnerModule,
-        VideoCardComponent,
+        VideoListComponent,
     ],
     templateUrl: './home.component.html',
 })
 export class HomeComponent implements OnInit, OnDestroy {
     sub?: Subscription
     isLoading = false
+    mode = 'home'
     view = 'default'
 
     constructor(
         private router: Router,
-        private service: HomeService,
+        private homeService: HomeService,
+        private categoryService: CategoryService,
     ) {}
 
     ngOnInit() {
@@ -42,6 +40,13 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.sub?.unsubscribe()
     }
 
+    get service() {
+        return switchCase(this.mode, {
+            category: this.categoryService,
+            default: this.homeService,
+        })
+    }
+
     get videos(): ListVideo[] {
         return this.service.getVideos(this.view)
     }
@@ -52,7 +57,17 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     initView = () => {
         const parts = this.router.url.split('/')
-        this.view = parts[parts.length - 1] || 'default'
+
+        this.mode = switchCase(parts[1], {
+            category: 'category',
+            default: 'home',
+        })
+
+        this.view = parts[parts.length - 1] || switchCase(this.mode, {
+            category: 'media',
+            default: 'default',
+        })
+
         window.scrollTo(0, 0)
         this.initLoad()
     }
