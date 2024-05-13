@@ -24,7 +24,7 @@ export default class CacheList {
             const json = JSON.parse(ls)
             const order = new this(json.name, json.videos.map(ListVideo.fromJSON), json.page, json.hasNext, json.createdAt)
 
-            if (new Date().getTime() - order.createdAt < this.lifetime)
+            if (new Date().getTime() - order.createdAt < this.lifetime && order.videos.length > 0)
                 return order
         }
 

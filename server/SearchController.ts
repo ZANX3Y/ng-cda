@@ -29,7 +29,7 @@ namespace SearchController {
         const response = await axios.get(url.toString()).catch(() => {})
 
         if (!response) {
-            ApiError.NOT_FOUND.raise(res)
+            res.json({ videos: [], hasNext: false })
             return
         }
 
@@ -38,7 +38,9 @@ namespace SearchController {
         const videos = $('div.row-video-clip-wrapper div.video-clip')
             .map((_, el) => ListVideo.fromHtml($(el))).get()
 
-        res.json(videos)
+        const hasNext = $('.paginationControl a.sbmNext').length > 0 && videos.length > 0
+
+        res.json({ videos, hasNext })
     }
 
     export async function suggest(req: Request, res: Response) {

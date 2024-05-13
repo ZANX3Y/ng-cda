@@ -7,6 +7,7 @@ import ListVideo from '../../../../shared/ListVideo'
 import { CategoryService } from '../../data/category.service'
 import { HomeService } from '../../data/home.service'
 import { VideoListComponent } from '../video-list/video-list.component'
+import { SearchService } from '../../data/search.service';
 
 @Component({
     selector: 'app-home',
@@ -26,6 +27,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     constructor(
         private router: Router,
         private homeService: HomeService,
+        private searchService: SearchService,
         private categoryService: CategoryService,
     ) {}
 
@@ -43,6 +45,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     get service() {
         return switchCase(this.mode, {
             category: this.categoryService,
+            search: this.searchService,
             default: this.homeService,
         })
     }
@@ -60,11 +63,13 @@ export class HomeComponent implements OnInit, OnDestroy {
 
         this.mode = switchCase(parts[1], {
             category: 'category',
+            search: 'search',
             default: 'home',
         })
 
         this.view = parts[parts.length - 1] || switchCase(this.mode, {
             category: 'media',
+            search: '',
             default: 'default',
         })
 

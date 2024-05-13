@@ -1,3 +1,5 @@
+<p-toast />
+
 <aside id="sidebar" [ngClass]="{ 'active': sidebarActive }">
     <header class="flex items-center justify-center h-14 flex-shrink-0 select-none bg-gradient-to-t from-surface-a to-surface-b">
         <a class="text-xl font-semibold font-brand" routerLink="/">ngCda</a>
@@ -55,8 +57,15 @@
         </p-button>
 
         <p-inputGroup styleClass="w-full max-w-screen-sm h-10 pl-2 pr-4 mx-auto">
-            <input type="text" pInputText placeholder="Szukaj" class="pl-5 rounded-l-full">
-            <button type="button" pButton icon="pi pi-search" class="w-14 pr-1 rounded-r-full p-button-secondary"></button>
+            <p-autoComplete [(ngModel)]="searchQuery" [suggestions]="searchSuggestions"
+                            (completeMethod)="suggest()" (onSelect)="search()" (keydown.enter)="search()"
+                            minLength="2" showClear="true"
+                            placeholder="Szukaj" emptyMessage="Brak wyników"
+                            styleClass="w-full" inputStyleClass="pl-5 h-10 rounded-l-full"
+                            panelStyleClass="rounded-xl" />
+
+            <p-button icon="pi pi-search" (click)="search()"
+                      styleClass="w-14 h-10 pr-1 rounded-r-full p-button-secondary" />
         </p-inputGroup>
     </div>
 

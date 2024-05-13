@@ -4,4 +4,9 @@
     <app-video-card *ngFor="let video of videos" [video]="video"></app-video-card>
 
     <p-progressSpinner class="flex justify-center w-full col-span-full" *ngIf="hasNext" />
+
+    <div class="flex justify-center w-full col-span-full py-8 text-gray-500" *ngIf="!hasNext">
+        <p *ngIf="videos.length === 0">Brak wyników</p>
+        <p *ngIf="videos.length > 0">Koniec wyników</p>
+    </div>
 </div>

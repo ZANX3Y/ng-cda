@@ -6,4 +6,5 @@ export const routes: Routes = [
     { path: 'top', component: HomeComponent },
     { path: 'new', component: HomeComponent },
     { path: 'category/:id', component: HomeComponent },
+    { path: 'search/:query', component: HomeComponent },
 ]
