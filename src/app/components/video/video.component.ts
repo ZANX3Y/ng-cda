@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common'
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router'
 import { MenuItem } from 'primeng/api'
 import { ButtonModule } from 'primeng/button'
@@ -25,6 +25,8 @@ import { VideoCardComponent } from '../video-card/video-card.component'
     styleUrl: './video.component.sass',
 })
 export class VideoComponent implements OnInit {
+    @ViewChild('player') player?: ElementRef<HTMLVideoElement>
+
     data?: Video
     qualityMenuItems: MenuItem[] = []
 
@@ -58,9 +60,27 @@ export class VideoComponent implements OnInit {
                     this.data = data;
                     this.qualityMenuItems = Object.keys(data.qualities).map(quality => ({
                         label: quality,
-                        command: () => console.log(`Selected quality: ${quality} - ${data.qualities[quality]}`)
+                        command: () => {
+                            console.log(`Selected quality: ${quality} - ${data.qualities[quality]}`)
+                            this.changeQuality(data.qualities[quality])
+                        }
                     }))
                 })
         })
+    }
+
+    changeQuality(quality: string) {
+        if (!this.data) return
+
+        const player = this.player!.nativeElement
+        const time = player.currentTime
+        player.pause()
+
+        this.videoService.changeQuality(this.data, quality)
+            .subscribe(() => {
+                player.load()
+                player.currentTime = time
+                player.play()
+            })
     }
 }

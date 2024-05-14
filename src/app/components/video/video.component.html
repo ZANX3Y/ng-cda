@@ -3,7 +3,7 @@
 
     <div class="flex flex-col gap-4 flex-auto">
         <div class="relative aspect-video bg-gray-900 rounded-lg overflow-hidden">
-            <video class="absolute inset-0 w-full h-full object-cover" controls>
+            <video #player class="absolute inset-0 w-full h-full object-cover" controls>
                 <source [src]="data.file" type="video/mp4" />
             </video>
         </div>

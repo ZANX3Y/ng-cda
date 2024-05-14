@@ -26,4 +26,27 @@ export class VideoService {
                 observer.complete()
             })
         })
+
+    changeQuality = (video: Video, quality: string): Observable<string> =>
+        new Observable(observer => {
+            this.http.post(Config.api('/video/file'), {
+                id: video.id,
+                quality,
+                client: video.client,
+            }).subscribe((response: any) => {
+                video.client.sequence++
+
+                if (response.error) {
+                    observer.error(ApiError.fromId(response.error))
+                    observer.complete()
+                    return
+                }
+
+                video.quality = quality
+                video.file = response.file
+
+                observer.next(response.file)
+                observer.complete()
+            })
+        })
 }
