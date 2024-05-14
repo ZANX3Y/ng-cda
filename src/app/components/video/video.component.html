@@ -1,0 +1,105 @@
+<div class="max-w-screen-2xl mx-auto flex flex-row gap-8" *ngIf="data">
+    <p-menu #qualityMenu [model]="qualityMenuItems" [popup]="true" />
+
+    <div class="flex flex-col gap-4 flex-auto">
+        <div class="relative aspect-video bg-gray-900 rounded-lg overflow-hidden">
+            <video class="absolute inset-0 w-full h-full object-cover" controls>
+                <source [src]="data.file" type="video/mp4" />
+            </video>
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <div class="flex flex-row items-center gap-4 flex-wrap">
+                <a [href]="'https://cda.pl' + data.authorId" target="_blank"
+                   class="flex items-center gap-4 py-2 px-4 bg-surface-a rounded-lg select-none">
+                    <img class="w-10 h-10 rounded-full" [src]="data.authorPic" />
+                    <span class="font-semibold" [innerText]="data.authorName"></span>
+                </a>
+
+                <span class="flex-grow"></span>
+
+                <div class="flex flex-row items-center justify-center gap-4 flex-wrap">
+                    <p-button rounded severity="secondary" styleClass="px-3 py-1 gap-2">
+                        <span class="material-symbols-outlined text-xl">watch_later</span>
+                        <span class="text-sm">Do obejrzenia</span>
+                    </p-button>
+
+                    <a [href]="data.file" target="_blank">
+                        <p-button rounded severity="secondary" styleClass="px-3 py-1 gap-2">
+                            <span class="material-symbols-outlined fill text-xl">download</span>
+                            <span class="text-sm">Pobierz</span>
+                        </p-button>
+                    </a>
+
+                    <p-button rounded severity="secondary" styleClass="px-3 py-1 gap-2" (click)="qualityMenu.toggle($event)">
+                        <span class="material-symbols-outlined fill text-xl">settings</span>
+                    </p-button>
+                </div>
+            </div>
+
+            <h1 class="text-xl font-semibold" [innerText]="data.title"></h1>
+
+            <div class="flex flex-col gap-4 bg-surface-a rounded-lg p-4">
+                <p class="text-xs text-text-color-secondary">Dodano: {{ data.uploadDate | date: 'dd.MM.yyyy HH:mm' }}</p>
+
+                <p-tag value="Prywatne" severity="warning" *ngIf="data.isPrivate">
+                    <span class="material-symbols-outlined fill text-base mr-1">lock</span>
+                </p-tag>
+
+                <div class="text-sm" [innerHtml]="data.desc" *ngIf="data.desc"></div>
+            </div>
+        </div>
+
+        <div class="grid 2xl:hidden grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <app-video-card *ngFor="let video of data.related" [video]="video" />
+        </div>
+
+        <div class="flex flex-col gap-6 pt-4">
+            <h2 class="text-lg font-semibold">Komentarze</h2>
+
+            <div class="flex flex-col gap-6">
+
+                <div class="flex flex-row gap-4" *ngFor="let comment of data.comments">
+                    <img class="w-10 h-10 rounded-full border border-surface-d" [src]="comment.author.pic" />
+
+                    <div class="flex flex-col gap-2 flex-auto">
+                        <div class="flex flex-col gap-2 bg-surface-a rounded-lg p-3 pt-2">
+                            <div class="flex flex-row items-center gap-2">
+                                <span class="text-xs font-semibold" [innerText]="comment.author.name"></span>
+                                <span class="text-xs text-text-color-secondary" [innerText]="comment.date"></span>
+                            </div>
+
+                            <p class="text-sm" [innerText]="comment.content"></p>
+
+                            <div class="flex flex-row gap-4 pt-2">
+                                <p-button rounded severity="secondary" styleClass="px-3 py-1 gap-2">
+                                    <span class="material-symbols-outlined text-sm">thumb_up</span>
+                                    <span class="text-xs" [innerText]="comment.points"></span>
+                                </p-button>
+
+                                <p-button rounded severity="secondary" styleClass="px-3 py-1 gap-2">
+                                    <span class="material-symbols-outlined text-sm">reply</span>
+                                    <span class="text-xs">Odpowiedz</span>
+                                </p-button>
+                            </div>
+                        </div>
+
+                        <p-button rounded severity="secondary" styleClass="px-3 py-1 gap-2">
+                            <span class="material-symbols-outlined text-sm">keyboard_arrow_down</span>
+                            <span class="text-xs">{{ comment.replyCount }} {{ comment.replyCount === 1 ? 'odpowiedź' : 'odpowiedzi' }}</span>
+                        </p-button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="w-96 flex-shrink-0 hidden 2xl:flex flex-col gap-8">
+        <app-video-card *ngFor="let video of data.related" [video]="video" />
+    </div>
+</div>
+
+<div class="flex place-content-center" *ngIf="!data">
+    <p-progressSpinner />
+</div>
