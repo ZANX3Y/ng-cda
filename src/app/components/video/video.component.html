@@ -58,39 +58,7 @@
             <h2 class="text-lg font-semibold">Komentarze</h2>
 
             <div class="flex flex-col gap-6">
-
-                <div class="flex flex-row gap-4" *ngFor="let comment of data.comments">
-                    <img class="w-10 h-10 rounded-full border border-surface-d" [src]="comment.author.pic" />
-
-                    <div class="flex flex-col gap-2 flex-auto">
-                        <div class="flex flex-col gap-2 bg-surface-a rounded-lg p-3 pt-2">
-                            <div class="flex flex-row items-center gap-2">
-                                <span class="text-xs font-semibold" [innerText]="comment.author.name"></span>
-                                <span class="text-xs text-text-color-secondary" [innerText]="comment.date"></span>
-                            </div>
-
-                            <p class="text-sm" [innerText]="comment.content"></p>
-
-                            <div class="flex flex-row gap-4 pt-2">
-                                <p-button rounded severity="secondary" styleClass="px-3 py-1 gap-2">
-                                    <span class="material-symbols-outlined text-sm">thumb_up</span>
-                                    <span class="text-xs" [innerText]="comment.points"></span>
-                                </p-button>
-
-                                <p-button rounded severity="secondary" styleClass="px-3 py-1 gap-2">
-                                    <span class="material-symbols-outlined text-sm">reply</span>
-                                    <span class="text-xs">Odpowiedz</span>
-                                </p-button>
-                            </div>
-                        </div>
-
-                        <p-button rounded severity="secondary" styleClass="px-3 py-1 gap-2">
-                            <span class="material-symbols-outlined text-sm">keyboard_arrow_down</span>
-                            <span class="text-xs">{{ comment.replyCount }} {{ comment.replyCount === 1 ? 'odpowiedź' : 'odpowiedzi' }}</span>
-                        </p-button>
-                    </div>
-                </div>
-
+                <app-comment *ngFor="let comment of data.comments" [comment]="comment" [video]="data" />
             </div>
         </div>
     </div>

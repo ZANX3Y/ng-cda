@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common'
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router'
 import { MenuItem } from 'primeng/api'
 import { ButtonModule } from 'primeng/button'
@@ -8,6 +8,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner'
 import { TagModule } from 'primeng/tag'
 import Video from '../../../../shared/Video'
 import { VideoService } from '../../data/video.service'
+import { CommentComponent } from '../comment/comment.component'
 import { VideoCardComponent } from '../video-card/video-card.component'
 
 @Component({
@@ -16,15 +17,16 @@ import { VideoCardComponent } from '../video-card/video-card.component'
     imports: [
         ButtonModule,
         CommonModule,
+        CommentComponent,
+        MenuModule,
+        ProgressSpinnerModule,
         TagModule,
         VideoCardComponent,
-        ProgressSpinnerModule,
-        MenuModule,
     ],
     templateUrl: './video.component.html',
     styleUrl: './video.component.sass',
 })
-export class VideoComponent implements OnInit {
+export class VideoComponent implements OnInit, OnDestroy {
     @ViewChild('player') player?: ElementRef<HTMLVideoElement>
 
     data?: Video
@@ -42,6 +44,10 @@ export class VideoComponent implements OnInit {
         this.router.events.subscribe(event => {
             if (event instanceof NavigationEnd) this.load()
         })
+    }
+
+    ngOnDestroy(): void {
+        this.player?.nativeElement.pause()
     }
 
     load() {
