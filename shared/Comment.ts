@@ -6,7 +6,7 @@ class Comment {
         public id: string,
         public content: string,
         public date: string,
-        public points: string,
+        public points: number,
 
         public author: Comment.Author,
 
@@ -25,7 +25,7 @@ class Comment {
         if (com.length === 0) com = box
 
         const id = com.find(".tresc").attr("id")?.split("kom_tresc")[1] ?? ''
-        const points = com.find(".commentRate").text().slice(1) || "0"
+        const points = parseInt(com.find(".commentRate").text().slice(1) || "0")
         const date = com.find(".commentDate1").text()
         const content = com.find(".tresc").first().children().remove().end().text().trim()
 

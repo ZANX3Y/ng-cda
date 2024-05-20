@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common'
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ButtonModule } from 'primeng/button'
 import { ProgressSpinnerModule } from 'primeng/progressspinner'
 import Comment from '../../../../shared/Comment'
 import Video from '../../../../shared/Video'
-import { VideoService } from '../../data/video.service'
+import { CommentService } from '../../data/comment.service';
 
 @Component({
     selector: 'app-comment',
@@ -17,17 +17,22 @@ import { VideoService } from '../../data/video.service'
     templateUrl: './comment.component.html',
     styleUrl: './comment.component.sass',
 })
-export class CommentComponent {
+export class CommentComponent implements OnInit {
     @Input() comment!: Comment
     @Input() parent?: Comment
     @Input() video!: Video
 
     loadingReplies = false
     showReplies = false
+    isUpvoted = false
 
     constructor(
-        private videoService: VideoService,
+        private service: CommentService,
     ) {}
+
+    ngOnInit(): void {
+        this.isUpvoted = this.service.isUpvoted(this.comment)
+    }
 
     toggleReplies() {
         this.showReplies = !this.showReplies
@@ -39,7 +44,16 @@ export class CommentComponent {
         this.loadingReplies = true
         this.comment.replies = []
 
-        this.videoService.getReplies(this.video, this.comment)
+        this.service.getReplies(this.video, this.comment)
             .subscribe(() => this.loadingReplies = false)
+    }
+
+    upvote() {
+        if (this.isUpvoted) return
+
+        this.service.upvote(this.video, this.comment)
+            .subscribe(() => {
+                this.isUpvoted = true
+            })
     }
 }
