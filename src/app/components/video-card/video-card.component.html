@@ -1,6 +1,9 @@
 <a class="video-card" [routerLink]="['/video', video.id]">
     <div class="thumbnail">
-        <img [src]="video.thumb" [alt]="video.title" />
+        <p-skeleton width="100%" height="100%" class="skeleton" />
+
+        <img [src]="thumbnail">
+
         <span class="duration" [innerText]="video.duration"></span>
     </div>
 
