@@ -24,6 +24,20 @@ export class CommentService {
 
     isUpvoted = (comment: Comment) => this.upvoted.includes(comment.id)
 
+    loadComments = (video: Video): Observable<boolean> =>
+        new Observable(observer => {
+            this.http.post(Config.api('/video/comments'), {
+                id: video.id,
+                offset: video.comments.length,
+            }).subscribe((response: any) => {
+                const comments = response.map(Comment.fromJSON)
+                video.comments.push(...comments)
+
+                observer.next(comments.length > 0)
+                observer.complete()
+            })
+        })
+
     getReplies = (video: Video, comment: Comment): Observable<Comment[]> =>
         new Observable(observer => {
             this.http.post(Config.api('/video/comment/replies'), {

@@ -12,7 +12,7 @@
             <div class="flex flex-row items-center gap-4 flex-wrap">
                 <a [href]="'https://cda.pl' + data.authorId" target="_blank"
                    class="p-button p-button-secondary gap-4 py-2 px-3">
-                    <img class="w-10 h-10 rounded-full" [src]="data.authorPic" />
+                    <img class="w-10 h-10 rounded-full" [src]="data.authorPic" alt="">
                     <span class="font-semibold" [innerText]="data.authorName"></span>
                 </a>
 
@@ -57,8 +57,15 @@
         <div class="flex flex-col gap-6 pt-4">
             <h2 class="text-lg font-semibold">Komentarze</h2>
 
-            <div class="flex flex-col gap-6">
+            <div class="flex flex-col gap-6" infiniteScroll (scrolled)="loadComments()">
                 <app-comment *ngFor="let comment of data.comments" [comment]="comment" [video]="data" />
+
+                <p-progressSpinner class="flex justify-center w-full" *ngIf="hasMoreComments" />
+
+                <div class="flex justify-center w-full py-8 text-gray-500" *ngIf="!hasMoreComments">
+                    <p *ngIf="data.comments.length === 0">Brak komentarzy</p>
+                    <p *ngIf="data.comments.length > 0">Koniec komentarzy</p>
+                </div>
             </div>
         </div>
     </div>
