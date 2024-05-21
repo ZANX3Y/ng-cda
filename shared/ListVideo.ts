@@ -13,6 +13,23 @@ export default class ListVideo {
         public isPremium: boolean
     ) {}
 
+    static fromVideo(video: Video) {
+        const h = Math.floor(video.duration / 3600)
+        const m = Math.floor((video.duration % 3600) / 60)
+        const s = video.duration % 60
+
+        const duration = `${(h > 0) ? (h + ":") : ""}${m}:${s.toString().padStart(2, '0')}`
+
+        return new ListVideo(
+            video.id,
+            video.title,
+            video.thumb,
+            duration,
+            "",
+            false
+        )
+    }
+
     static fromHtml = ($: Cheerio<Element>) => {
         const titleEl = $.find('a.link-title-visit')
 

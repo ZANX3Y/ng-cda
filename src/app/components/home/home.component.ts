@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common'
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs'
@@ -13,10 +12,9 @@ import { SearchService } from '../../data/search.service';
     selector: 'app-home',
     standalone: true,
     imports: [
-        CommonModule,
         VideoListComponent,
     ],
-    templateUrl: './home.component.html',
+    template: '<app-video-list [videos]="videos" [hasNext]="hasNext" [load]="loadVideos" />',
 })
 export class HomeComponent implements OnInit, OnDestroy {
     sub?: Subscription

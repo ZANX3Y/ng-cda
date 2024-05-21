@@ -7,11 +7,13 @@ import { ButtonModule } from 'primeng/button'
 import { MenuModule } from 'primeng/menu'
 import { ProgressSpinnerModule } from 'primeng/progressspinner'
 import { TagModule } from 'primeng/tag'
+import ListVideo from '../../../../shared/ListVideo'
 import Video from '../../../../shared/Video'
 import { CommentService } from '../../data/comment.service'
 import { VideoService } from '../../data/video.service'
 import { CommentComponent } from '../comment/comment.component'
 import { VideoCardComponent } from '../video-card/video-card.component'
+import { HistoryService } from '../../data/history.service';
 
 @Component({
     selector: 'app-video',
@@ -27,20 +29,24 @@ import { VideoCardComponent } from '../video-card/video-card.component'
         VideoCardComponent,
     ],
     templateUrl: './video.component.html',
-    styleUrl: './video.component.sass',
 })
 export class VideoComponent implements OnInit, OnDestroy {
     @ViewChild('player') player?: ElementRef<HTMLVideoElement>
 
     data?: Video
+    miniData?: ListVideo
     qualityMenuItems: MenuItem[] = []
     hasMoreComments = true
+
+    restored = false
+    lastProgressSave = 0
 
     constructor(
         private router: Router,
         private route: ActivatedRoute,
         private videoService: VideoService,
         private commentService: CommentService,
+        private historyService: HistoryService,
     ) {}
 
     ngOnInit(): void {
@@ -69,6 +75,8 @@ export class VideoComponent implements OnInit, OnDestroy {
             this.videoService.getVideo(id)
                 .subscribe(data => {
                     this.data = data;
+                    this.miniData = ListVideo.fromVideo(data)
+
                     this.qualityMenuItems = Object.keys(data.qualities).map(quality => ({
                         label: quality,
                         command: () => {
@@ -76,9 +84,39 @@ export class VideoComponent implements OnInit, OnDestroy {
                             this.changeQuality(data.qualities[quality])
                         }
                     }))
+
                     this.hasMoreComments = data.comments.length > 0
                 })
         })
+    }
+
+    onLoadedMD() {
+        if (this.restored) return
+        this.restored = true
+
+        const history = this.historyService.getEntry(this.data!.id)
+
+        if (!this.player || !history || (history.progress / history.duration) > 0.99) return
+
+        const player = this.player.nativeElement
+        player.currentTime = history.progress
+    }
+
+    onProgress(){
+        if (!this.miniData || !this.restored) return
+
+        const player = this.player!.nativeElement
+
+        // Save progress every 5 seconds
+        if (player.currentTime - this.lastProgressSave < 5) return
+
+        this.lastProgressSave = player.currentTime
+        this.historyService.add(this.miniData, player.duration, player.currentTime)
+    }
+
+    onSeeked() {
+        this.lastProgressSave = 0
+        this.onProgress()
     }
 
     changeQuality(quality: string) {

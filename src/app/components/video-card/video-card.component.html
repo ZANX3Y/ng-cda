@@ -2,9 +2,11 @@
     <div class="thumbnail">
         <p-skeleton width="100%" height="100%" class="skeleton" />
 
-        <img [src]="thumbnail">
+        <img [src]="thumbnail" alt="">
 
         <span class="duration" [innerText]="video.duration"></span>
+
+        <p-progressBar [value]="watchProgress" showValue="false" class="progress" *ngIf="watchProgress > 0" color="var(--primary-color)" />
     </div>
 
     <h3 class="title" [innerText]="video.title" [title]="video.title"></h3>

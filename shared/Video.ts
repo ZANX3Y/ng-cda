@@ -11,6 +11,7 @@ class Video {
         public quality: string,
         public qualities: { [key: string]: string },
         public file: string,
+        public duration: number,
 
         public desc: string,
         public uploadDate: string,
@@ -76,6 +77,7 @@ class Video {
         const quality = vid.quality
         const qualities = vid.qualities
         const file = Video.decodeFileLink(vid.file)
+        const duration = vid.duration
 
         const desc = $('span[itemprop="description"]').html()?.trim() ?? ''
         const uploadDate = $('meta[itemprop="uploadDate"]').attr('content') ?? ''
@@ -100,7 +102,7 @@ class Video {
         const client = new Video.Client(3, vid.ts, vid.hash2)
 
         return new Video(
-            id, title, thumb, quality, qualities, file,
+            id, title, thumb, quality, qualities, file, duration,
             desc, uploadDate, isPrivate,
             authorId, authorName, authorPic,
             inFolder, folderId, folderName,
@@ -111,7 +113,7 @@ class Video {
 
     static fromJSON = (json: any) =>
         new Video(
-            json.id, json.title, json.thumb, json.quality, json.qualities, json.file,
+            json.id, json.title, json.thumb, json.quality, json.qualities, json.file, json.duration,
             json.desc, json.uploadDate, json.isPrivate,
             json.authorId, json.authorName, json.authorPic,
             json.inFolder, json.folderId, json.folderName,
