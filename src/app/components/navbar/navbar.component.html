@@ -1,0 +1,17 @@
+<div id="navbar">
+    <p-button icon="pi pi-menu" [rounded]="true" [text]="true" (click)="toggleSidebar()" class="md:hidden">
+        <i class="material-symbols-outlined text-2xl text-text-color">menu</i>
+    </p-button>
+
+    <p-inputGroup styleClass="w-full max-w-screen-sm h-10 pl-2 pr-4 mx-auto">
+        <p-autoComplete [(ngModel)]="searchQuery" [suggestions]="searchSuggestions"
+                        (completeMethod)="suggest()" (onSelect)="search()" (keydown.enter)="search()"
+                        minLength="2" showClear="true"
+                        placeholder="Szukaj" emptyMessage="Brak wyników"
+                        styleClass="w-full" inputStyleClass="pl-5 h-10 rounded-l-full"
+                        panelStyleClass="rounded-xl" />
+
+        <p-button icon="pi pi-search" (click)="search()"
+                  styleClass="w-14 h-10 pr-1 rounded-r-full p-button-secondary" />
+    </p-inputGroup>
+</div>

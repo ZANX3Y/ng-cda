@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router'
-import { HistoryComponent } from './components/history/history.component'
-import { HomeComponent } from './components/home/home.component'
-import { VideoComponent } from './components/video/video.component'
+import { HistoryComponent } from './views/history.component'
+import { HomeComponent } from './views/home.component'
+import { VideoComponent } from './views/video/video.component'
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },

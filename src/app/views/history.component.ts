@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { HistoryService } from '../../data/history.service'
-import { VideoListComponent } from '../video-list/video-list.component'
+import { HistoryService } from '../data/history.service'
+import { VideoListComponent } from '../components/video-list/video-list.component'
 
 @Component({
     selector: 'app-history',

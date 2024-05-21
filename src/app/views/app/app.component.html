@@ -1,0 +1,11 @@
+<p-toast />
+
+<app-sidebar [sidebarActive]="sidebarActive" [toggleSidebar]="toggleSidebar" />
+
+<main class="ml-0 md:ml-64">
+    <app-navbar [toggleSidebar]="toggleSidebar" />
+
+    <div class="p-8">
+        <router-outlet />
+    </div>
+</main>

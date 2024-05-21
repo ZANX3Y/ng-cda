@@ -1,0 +1,10 @@
+#navbar
+    @apply sticky top-0 z-30 flex items-center h-14 px-2 gap-2 bg-gradient-to-t from-surface-a to-surface-b
+
+    &::before
+        content: ''
+        @apply absolute top-full left-0 w-8 h-8 bg-surface-a hidden md:block
+
+    &::after
+        content: ''
+        @apply absolute top-full left-0 w-8 h-8 bg-surface-ground rounded-tl-2xl hidden md:block

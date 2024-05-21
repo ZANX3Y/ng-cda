@@ -15,7 +15,6 @@ import { CommentService } from '../../data/comment.service';
         ProgressSpinnerModule,
     ],
     templateUrl: './comment.component.html',
-    styleUrl: './comment.component.sass',
 })
 export class CommentComponent implements OnInit {
     @Input() comment!: Comment

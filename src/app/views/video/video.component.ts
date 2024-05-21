@@ -11,8 +11,8 @@ import ListVideo from '../../../../shared/ListVideo'
 import Video from '../../../../shared/Video'
 import { CommentService } from '../../data/comment.service'
 import { VideoService } from '../../data/video.service'
-import { CommentComponent } from '../comment/comment.component'
-import { VideoCardComponent } from '../video-card/video-card.component'
+import { CommentComponent } from '../../components/comment/comment.component'
+import { VideoCardComponent } from '../../components/video-card/video-card.component'
 import { HistoryService } from '../../data/history.service';
 
 @Component({

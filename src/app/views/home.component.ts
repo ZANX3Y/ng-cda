@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs'
-import { switchCase } from '../../../../server/utils'
-import ListVideo from '../../../../shared/ListVideo'
-import { CategoryService } from '../../data/category.service'
-import { HomeService } from '../../data/home.service'
-import { VideoListComponent } from '../video-list/video-list.component'
-import { SearchService } from '../../data/search.service';
+import { switchCase } from '../../../server/utils'
+import ListVideo from '../../../shared/ListVideo'
+import { CategoryService } from '../data/category.service'
+import { HomeService } from '../data/home.service'
+import { VideoListComponent } from '../components/video-list/video-list.component'
+import { SearchService } from '../data/search.service';
 
 @Component({
     selector: 'app-home',
