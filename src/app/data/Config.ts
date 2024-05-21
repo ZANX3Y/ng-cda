@@ -20,6 +20,14 @@ export default class Config {
 
     public static api = (path: string) => `${Config.API_URL}${path}`
 
+    public static get PROGRESS_SAVE_INTERVAL() {
+        return this.get('PROGRESS_SAVE_INTERVAL', 5)
+    }
+
+    public static set PROGRESS_SAVE_INTERVAL(value: number) {
+        this.set('PROGRESS_SAVE_INTERVAL', value)
+    }
+
     public static get CATEGORIES_EXPANDED() {
         return this.get('CATEGORIES_EXPANDED', true)
     }

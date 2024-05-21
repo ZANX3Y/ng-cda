@@ -1,0 +1,25 @@
+<div class="box pb-16 flex flex-col gap-8">
+    <h1 class="my-8 text-3xl font-bold">Ustawienia</h1>
+
+    <p-fieldset legend="Połączenie" styleClass="grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-8 pt-2">
+        <label class="flex flex-col gap-1">
+            <span class="text-sm ps-2">Adres serwera API</span>
+
+            <p-inputGroup>
+                <p-inputGroupAddon styleClass="flex">
+                    <i class="material-symbols-outlined">cloud</i>
+                </p-inputGroupAddon>
+                <input pInputText [(ngModel)]="Config.API_URL" />
+            </p-inputGroup>
+        </label>
+    </p-fieldset>
+
+    <p-fieldset legend="Odtwarzacz" styleClass="grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-8 pt-2">
+        <label class="flex flex-col gap-1">
+            <span class="text-sm ps-2">Częstotliwość zapisywania postępu</span>
+            <p-inputNumber [(ngModel)]="Config.PROGRESS_SAVE_INTERVAL" [min]="1" [max]="30" [step]="1"
+                           suffix="s" inputStyleClass="w-full" styleClass="w-full" [showButtons]="true" buttonLayout="horizontal"
+                           incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"/>
+        </label>
+    </p-fieldset>
+</div>

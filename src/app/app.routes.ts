@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router'
 import { HistoryComponent } from './views/history.component'
 import { HomeComponent } from './views/home.component'
+import { SettingsComponent } from './views/settings/settings.component'
 import { VideoComponent } from './views/video/video.component'
 
 export const routes: Routes = [
@@ -11,4 +12,5 @@ export const routes: Routes = [
     { path: 'search/:query', component: HomeComponent },
     { path: 'video/:id', component: VideoComponent },
     { path: 'history', component: HistoryComponent },
+    { path: 'settings', component: SettingsComponent },
 ]

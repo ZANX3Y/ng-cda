@@ -10,6 +10,7 @@ import { TagModule } from 'primeng/tag'
 import ListVideo from '../../../../shared/ListVideo'
 import Video from '../../../../shared/Video'
 import { CommentService } from '../../data/comment.service'
+import Config from '../../data/Config'
 import { VideoService } from '../../data/video.service'
 import { CommentComponent } from '../../components/comment/comment.component'
 import { VideoCardComponent } from '../../components/video-card/video-card.component'
@@ -107,8 +108,7 @@ export class VideoComponent implements OnInit, OnDestroy {
 
         const player = this.player!.nativeElement
 
-        // Save progress every 5 seconds
-        if (player.currentTime - this.lastProgressSave < 5) return
+        if (player.currentTime - this.lastProgressSave < Config.PROGRESS_SAVE_INTERVAL) return
 
         this.lastProgressSave = player.currentTime
         this.historyService.add(this.miniData, player.duration, player.currentTime)
