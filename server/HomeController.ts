@@ -18,7 +18,9 @@ namespace HomeController {
         const $ = load(response.data)
 
         const videos = $('div.video-clip, div.videoInfo')
-            .map((_, el) => ListVideo.fromHtml($(el))).get()
+            .map((_, el) => ListVideo.fromHtml($(el)))
+            .get()
+            .filter(v => v !== undefined)
 
         const hasNext = $('.paginationControl a.sbmNext').length > 0 && videos.length > 0
 

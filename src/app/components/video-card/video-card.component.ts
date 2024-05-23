@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router'
 import { ProgressBarModule } from 'primeng/progressbar'
 import { SkeletonModule } from 'primeng/skeleton'
 import ListVideo from '../../../../shared/ListVideo'
+import Video from '../../../../shared/Video'
 import { HistoryService } from '../../data/history.service'
 
 @Component({
@@ -31,8 +32,17 @@ export class VideoCardComponent implements OnInit {
         return this.video.thumb.replace(/_\d+x\d+\.jpg$/, `_${this.thumbnailSize}.jpg`)
     }
 
+    get link() {
+        return this.video.isPremium ? undefined : ['/video', this.video.id]
+    }
+
     ngOnInit() {
         const entry = this.history.getEntry(this.video.id)
         if (entry) this.watchProgress = (entry.progress / entry.duration) * 100
+    }
+
+    onClick() {
+        if (!this.video.isPremium) return
+        window.open(Video.getLink(this.video.id), '_blank')
     }
 }

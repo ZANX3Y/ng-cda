@@ -9,13 +9,14 @@ class Video {
         public title: string,
         public thumb: string,
         public quality: string,
-        public qualities: { [key: string]: string },
+        public qualities: Record<string, string>,
         public file: string,
         public duration: number,
 
         public desc: string,
         public uploadDate: string,
         public isPrivate: boolean,
+        public tags: string[],
 
         public authorId: string,
         public authorName: string,
@@ -34,10 +35,8 @@ class Video {
 
     static getId(url?: string): string {
         if (!url) return ''
-        const urlArr = url.split('/')
-        let id = urlArr.pop()
-        if (id == 'vfilm') id = urlArr.pop()
-        return id ?? ''
+        const parts = url.match(/video\/([a-zA-Z0-9]+)/)
+        return parts?.[1] ?? ''
     }
 
     static getLink(id: string, quality: string = ''): string {
@@ -82,6 +81,10 @@ class Video {
         const desc = $('span[itemprop="description"]').html()?.trim() ?? ''
         const uploadDate = $('meta[itemprop="uploadDate"]').attr('content') ?? ''
         const isPrivate = $('.private-video-info').length > 0
+        const tags = $('.tags a.tag-element')
+            .map((_, el) => $(el).text().trim())
+            .get()
+            .filter(t => t.length > 0)
 
         const authorId = $('.DescrVID-left .pull-left a').attr('href') ?? ''
         const authorName = $('.DescrVID a.link-primary>span>span').text().trim()
@@ -98,12 +101,14 @@ class Video {
         const related = relatedEls.map((_, el) => {
             return ListVideo.fromHtml($(el))
         }).get()
+            .filter(v => v !== undefined)
+            .filter((v, i, a) => a.findIndex(v2 => v2.id === v.id) === i)
 
         const client = new Video.Client(3, vid.ts, vid.hash2)
 
         return new Video(
             id, title, thumb, quality, qualities, file, duration,
-            desc, uploadDate, isPrivate,
+            desc, uploadDate, isPrivate, tags,
             authorId, authorName, authorPic,
             inFolder, folderId, folderName,
             comments, related,
@@ -114,7 +119,7 @@ class Video {
     static fromJSON = (json: any) =>
         new Video(
             json.id, json.title, json.thumb, json.quality, json.qualities, json.file, json.duration,
-            json.desc, json.uploadDate, json.isPrivate,
+            json.desc, json.uploadDate, json.isPrivate, json.tags,
             json.authorId, json.authorName, json.authorPic,
             json.inFolder, json.folderId, json.folderName,
             json.comments.map(Comment.fromJSON),

@@ -32,9 +32,12 @@ export default class ListVideo {
 
     static fromHtml = ($: Cheerio<Element>) => {
         const titleEl = $.find('a.link-title-visit')
+        const id = Video.getId(titleEl.attr('href'))
+
+        if (!id) return undefined
 
         return new ListVideo(
-            Video.getId(titleEl.attr('href')),
+            id,
             titleEl.text().trim(),
             fixUrl($.find('img').attr('src')!),
             $.find('span.timeElem').text().trim(),
