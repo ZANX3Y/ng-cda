@@ -38,6 +38,12 @@ export class HistoryService {
         this.save()
     }
 
+    remove(id: string) {
+        const el = this.history.findIndex(entry => entry.id === id)
+        if (el !== -1) this.history.splice(el, 1)
+        this.save()
+    }
+
     getEntry = (id: string) => this.history.find(entry => entry.id === id)
 
     getHistory = () => this.history

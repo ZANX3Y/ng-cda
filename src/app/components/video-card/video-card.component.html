@@ -1,18 +1,24 @@
-<a class="video-card" [routerLink]="link" (click)="onClick()">
-    <div class="thumbnail">
-        <p-skeleton width="100%" height="100%" class="skeleton" />
+<div class="video-card">
+    <a class="body" [routerLink]="link" (click)="onClick()">
+        <div class="thumbnail">
+            <p-skeleton width="100%" height="100%" class="skeleton" />
 
-        <img [src]="thumbnail" alt="">
+            <img [src]="thumbnail" alt="">
 
-        <span class="duration" [innerText]="video.duration"></span>
+            <div class="premium" *ngIf="video.isPremium">
+                <span class="icon material-symbols-outlined">paid</span>
+                <span class="text">Premium</span>
+            </div>
 
-        <div class="premium" *ngIf="video.isPremium">
-            <span class="icon material-symbols-outlined">paid</span>
-            <span class="text">Premium</span>
+            <span class="duration" [innerText]="video.duration"></span>
+
+            <p-progressBar [value]="watchProgress" showValue="false" class="progress" *ngIf="watchProgress > 0" color="var(--primary-color)" />
         </div>
 
-        <p-progressBar [value]="watchProgress" showValue="false" class="progress" *ngIf="watchProgress > 0" color="var(--primary-color)" />
-    </div>
+        <h3 class="title" [innerText]="video.title" [title]="video.title"></h3>
+    </a>
 
-    <h3 class="title" [innerText]="video.title" [title]="video.title"></h3>
-</a>
+    <div class="actions" *ngIf="actions.length > 0">
+        <span class="action material-symbols-outlined" *ngFor="let action of actions" [innerText]="action.icon" (click)="$event.stopPropagation(); action.handler(video)"></span>
+    </div>
+</div>

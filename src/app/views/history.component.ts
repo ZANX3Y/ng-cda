@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { HistoryService } from '../data/history.service'
+import { VideoCardAction } from '../components/video-card/video-card.component'
 import { VideoListComponent } from '../components/video-list/video-list.component'
+import { HistoryService } from '../data/history.service'
 
 @Component({
     selector: 'app-history',
@@ -8,9 +9,13 @@ import { VideoListComponent } from '../components/video-list/video-list.componen
     imports: [
         VideoListComponent,
     ],
-    template: '<app-video-list [videos]="videos" />',
+    template: '<app-video-list [videos]="videos" [actions]="actions" />',
 })
 export class HistoryComponent {
+    actions = [
+        new VideoCardAction('clear', (video) => this.historyService.remove(video.id)),
+    ]
+
     constructor(
         private historyService: HistoryService,
     ) {}

@@ -3,7 +3,7 @@ import { Component, Input } from '@angular/core';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll'
 import { ProgressSpinnerModule } from 'primeng/progressspinner'
 import ListVideo from '../../../../shared/ListVideo'
-import { VideoCardComponent } from '../video-card/video-card.component'
+import { VideoCardAction, VideoCardComponent } from '../video-card/video-card.component'
 
 @Component({
     selector: 'app-video-list',
@@ -18,6 +18,7 @@ import { VideoCardComponent } from '../video-card/video-card.component'
 })
 export class VideoListComponent {
     @Input() videos: ListVideo[] = []
+    @Input() actions: VideoCardAction[] = []
     @Input() hasNext = false
     @Input() load = () => {}
 }
