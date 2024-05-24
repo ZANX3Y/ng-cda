@@ -1,7 +1,7 @@
 <div class="max-w-screen-2xl mx-auto flex flex-row" *ngIf="data">
     <p-menu #qualityMenu [model]="qualityMenuItems" [popup]="true" />
 
-    <div class="flex flex-col gap-4 flex-auto">
+    <div class="max-w-full flex flex-col gap-4 flex-auto">
         <div class="relative aspect-video bg-gray-900 rounded-lg overflow-hidden">
             <video #player class="absolute inset-0 w-full h-full object-cover" controls
                    (loadedmetadata)="onLoadedMD()" (timeupdate)="onProgress()" (seeked)="onSeeked()">
