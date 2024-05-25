@@ -20,8 +20,8 @@
                 <span class="flex-grow"></span>
 
                 <div class="flex flex-row items-center justify-center gap-4 flex-wrap">
-                    <p-button rounded severity="secondary" styleClass="px-3 py-1 gap-2">
-                        <span class="material-symbols-outlined text-xl">watch_later</span>
+                    <p-button rounded [severity]="isWatchLater ? 'contrast' : 'secondary'" styleClass="px-3 py-1 gap-2" (click)="watchLater()">
+                        <span class="material-symbols-outlined text-xl" [ngClass]="{ 'fill': isWatchLater }">watch_later</span>
                         <span class="text-sm">Do obejrzenia</span>
                     </p-button>
 

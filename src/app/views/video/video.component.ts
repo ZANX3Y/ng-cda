@@ -15,6 +15,7 @@ import { VideoService } from '../../data/video.service'
 import { CommentComponent } from '../../components/comment/comment.component'
 import { VideoCardComponent } from '../../components/video-card/video-card.component'
 import { HistoryService } from '../../data/history.service';
+import { WatchLaterService } from '../../data/watch-later.service';
 
 @Component({
     selector: 'app-video',
@@ -48,6 +49,7 @@ export class VideoComponent implements OnInit, OnDestroy {
         private videoService: VideoService,
         private commentService: CommentService,
         private historyService: HistoryService,
+        private wlService: WatchLaterService,
     ) {}
 
     ngOnInit(): void {
@@ -139,5 +141,17 @@ export class VideoComponent implements OnInit, OnDestroy {
 
         this.commentService.loadComments(this.data)
             .subscribe(hasMore => this.hasMoreComments = hasMore)
+    }
+
+    get isWatchLater() {
+        if (!this.miniData) return false
+        return this.wlService.getEntry(this.miniData.id) !== undefined
+    }
+
+    watchLater() {
+        if (!this.miniData) return
+
+        if (this.isWatchLater) this.wlService.remove(this.miniData.id)
+        else this.wlService.add(this.miniData)
     }
 }
