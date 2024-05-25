@@ -40,7 +40,7 @@ export class VideoComponent implements OnInit, OnDestroy {
     qualityMenuItems: MenuItem[] = []
     hasMoreComments = true
 
-    restored = false
+    restored: number = 0
     lastProgressSave = 0
 
     constructor(
@@ -89,13 +89,16 @@ export class VideoComponent implements OnInit, OnDestroy {
                     }))
 
                     this.hasMoreComments = data.comments.length > 0
+
+                    this.restored = 0
+                    this.lastProgressSave = 0
                 })
         })
     }
 
     onLoadedMD() {
         if (this.restored) return
-        this.restored = true
+        this.restored = Date.now()
 
         const history = this.historyService.getEntry(this.data!.id)
 
@@ -106,7 +109,7 @@ export class VideoComponent implements OnInit, OnDestroy {
     }
 
     onProgress(){
-        if (!this.miniData || !this.restored) return
+        if (!this.miniData || Date.now() - this.restored < 3000) return
 
         const player = this.player!.nativeElement
 
