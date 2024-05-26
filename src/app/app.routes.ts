@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router'
+import { AboutComponent } from './views/about/about.component'
 import { HistoryComponent } from './views/history.component'
 import { HomeComponent } from './views/home.component'
 import { SettingsComponent } from './views/settings/settings.component'
@@ -15,4 +16,5 @@ export const routes: Routes = [
     { path: 'watch-later', component: WatchLaterComponent },
     { path: 'history', component: HistoryComponent },
     { path: 'settings', component: SettingsComponent },
+    { path: 'about', component: AboutComponent },
 ]

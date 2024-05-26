@@ -1,0 +1,75 @@
+<div class="w-full max-w-xl mx-auto flex flex-col gap-12">
+    <div class="flex flex-col items-end gap-1 pt-24 pb-12 mx-auto select-none">
+        <h1 class="text-5xl font-bold font-brand">ngCda</h1>
+        <app-chip [text]="Config.CLIENT_VERSION" class="text-sm" />
+    </div>
+
+    <div class="text-center space-y-2">
+        <p>ngCda to alternatywny klient do funkcji społecznościowych serwisu CDA.pl</p>
+        <p>Aplikacja została stworzona w celach edukacyjnych i nie jest powiązana z serwisem CDA.pl</p>
+    </div>
+
+    <div class="w-full flex flex-row justify-center flex-wrap gap-4">
+        <a class="p-button" href="https://github.com/ZANX3Y/ng-cda" target="_blank">
+            <i class="material-symbols-outlined me-4">code</i>
+            <span class="font-medium">Kod źródłowy</span>
+        </a>
+
+        <a class="p-button" href="https://github.com/ZANX3Y/ng-cda/issues" target="_blank">
+            <i class="material-symbols-outlined me-4">bug_report</i>
+            <span>Zgłoś błąd</span>
+        </a>
+
+        <a class="p-button" (click)="depsVisible = true">
+            <i class="material-symbols-outlined me-4">library_books</i>
+            <span>Zależności</span>
+        </a>
+    </div>
+
+    <p class="text-center text-xs text-text-color-secondary">© 2024 <a href="https://znx.pw" target="_blank">ZANXEY</a></p>
+</div>
+
+<p-dialog header="Zależności" [(visible)]="depsVisible"
+          [modal]="true" [draggable]="false" [resizable]="false" [dismissableMask]="true"
+          styleClass="w-full max-w-xl max-h-[70vh] mx-8 lg:-me-32 lg:ms-32 rounded"
+          contentStyleClass="flex flex-col gap-2">
+
+    <ng-container *ngFor="let dep of deps; let last = last">
+        <div class="dep-item" (click)="selectedDep = dep; isDepSelected = true">
+            <div class="flex items-center flex-wrap gap-2">
+                <h2 [textContent]="dep.name"></h2>
+                <app-chip [text]="dep.version" class="text-xs" />
+            </div>
+
+            <p [textContent]="dep.copyright" *ngIf="dep.copyright"></p>
+            <p *ngIf="dep.licenses">Licencja: {{ dep.licenses }}</p>
+        </div>
+
+        <p-divider *ngIf="!last" />
+    </ng-container>
+</p-dialog>
+
+<p-dialog [header]="selectedDep?.name" [(visible)]="isDepSelected"
+          [modal]="true" [draggable]="false" [resizable]="false" [dismissableMask]="true"
+          styleClass="w-full max-w-4xl max-h-[70vh] mx-8 xl:-me-32 xl:ms-32 rounded overflow-hidden"
+          contentStyleClass="flex flex-col gap-2">
+
+    <ng-template pTemplate="header">
+        <div class="w-full flex flex-row items-center gap-6 pe-6">
+            <p-button icon="pi pi-external-link" styleClass="p-dialog-header-icon"
+                      *ngIf="selectedDep?.repository" (click)="openLink(selectedDep?.repository)" />
+
+            <div class="flex flex-row items-center flex-wrap gap-2">
+                <h2 [textContent]="selectedDep?.name" class="text-lg font-bold"></h2>
+                <app-chip [text]="selectedDep?.version" class="text-xs" />
+            </div>
+        </div>
+    </ng-template>
+
+    <div class="w-full flex flex-col items-center gap-4">
+        <p [innerText]="selectedDep?.copyright" class="text-sm" *ngIf="selectedDep?.copyright"></p>
+
+        <markdown [data]="selectedDep?.licenseText" *ngIf="selectedDep?.licenseText"
+                  class="w-full max-w-4xl p-8 overflow-x-auto bg-surface-a rounded prose prose-invert prose-a:inline-block prose-img:m-0" />
+    </div>
+</p-dialog>

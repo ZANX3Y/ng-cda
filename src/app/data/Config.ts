@@ -1,4 +1,6 @@
 export default class Config {
+    public static readonly CLIENT_VERSION = '0.1.0'
+
     private static key = (key: string) => `Config.${key}`
 
     private static get<T>(key: string, defaultValue: T): T {
